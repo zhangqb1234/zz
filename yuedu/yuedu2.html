@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="yuedu2.css" />
+	</head>
+	<body>
+		<div>
+			<header>
+				书旗小说
+			</header>
+			<section class="js-font">
+				在一个美丽的秋天里，落叶纷纷。
+				猫的报恩森林深处有一间小木屋，
+				里面住着一位白发苍苍的老爷爷，
+				小木屋显得独一无二，因为孤身一人的老爷爷，
+				经营着森林里唯一的水果铺。和蔼善良让老爷爷的生意不错，
+				森林里的小动物都喜欢光顾他的小店，也喜欢和老爷爷一起晒晒太阳，
+				聊聊天。它们给老爷爷带来的森林里种种有趣的事情，常常把老爷爷逗笑得胡子都飞了起来，
+				生活再也不会像秋天的落叶一样孤零零。
+　　				当然，偶尔也有可怜的小猫、小鹿们来讨白食。
+				这个时候，老爷爷总是会慷慨地准备很多丰盛的食物招待它们。
+				它们从来不用担心在老爷爷这里会招白眼、受冷落。渐渐地，
+				老爷爷的小木屋成了森林里的爱心小屋。
+　　				在这些讨白食的小动物中，
+				有一只白色的小流浪猫已经来这里“作客”了整整一年了
+				。它和老爷爷相依为命，相处得像父女一样，老爷爷悉心照料着小流浪猫，
+				白天逗它玩，晚上哄它睡，一家人的日子过得比蜜还甜。直到小白猫找到自己的“黑猫王子”
+				，老爷爷才依依不舍地把它嫁了出去。
+				有道是，天有不测风云。有一天凌晨，天色未开，森林里小生灵们都还沉浸在美好的梦乡中。
+				老爷爷的小木屋突然起火了，火势蔓延得很快，转眼间变成了熊熊大火，哔哔啪啪的声音传出很远很远，
+				小木屋随时有可能会坍塌下来了。但更可怕的是，老爷爷年纪大了，耳朵重了，竟然一点儿也没觉察到，
+				仍在沉沉酣睡中……眼看一场悲剧就要发生了，就在这千钧一发之际，那只小流浪猫这时不知从哪里窜出来，
+				火光映照出它肥大笨重的肚子——它已经怀孕了。小流浪猫来到小木屋前，焦急地冲着小木屋大声叫唤，
+				但老爷爷依旧毫无知觉，冲天的火焰中，小流浪猫奋不顾身弓起身窜进火海中，来到老爷爷的床前，
+				又叫又拽地唤醒了沉睡中的老爷爷。
+
+			</section>
+			<footer>
+			<ul>
+				<li class="js-addfontsize">+</li>
+				<li><span class="js-fontnumber">16</span>px</li>
+				<li class="js-minusfontsize">-</li>
+			</ul>
+			<ol>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ol>
+			</footer>
+			<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+			<script>
+				function Page() {
+					
+				}
+				
+				$.extend(Page.prototype, {
+					
+					init: function() {
+						this.restoreUserInfo();
+						this.bindEvents();
+						
+					},
+					
+					bindEvents: function() {
+						var addFontSize = $(".js-addfontsize"),
+							minusFontSize = $(".js-minusfontsize");
+						addFontSize.on("click", $.proxy(this.handleAddClick, this));
+						minusFontSize.on("click", $.proxy(this.handleMinusClick, this));
+						$("ol li").on("click", $.proxy(this.handleColorClick,this));
+					},
+					
+					restoreUserInfo: function() {
+						try{
+						if (window.localStorage) {
+							var msgInfo = {};
+							
+							if (window.localStorage.msgInfo) {
+								var msgInfo = JSON.parse(window.localStorage.msgInfo);
+							}
+							if (msgInfo.fontSize) {
+								$(".js-fontnumber").css({"fontSize":msgInfo.fontSize});
+							}
+							if (msgInfo.backgroundColor) {
+								$(".js-font").css({"background-color":msgInfo.backgroundColor});
+							}
+						}
+					}catch(e){}
+					},
+					
+					handleColorClick: function(e) {
+						var Color=$(e.target).css("background-color");
+							$(".js-font").css({
+								"background-color":Color
+							});
+							this.handelSubmit();
+					},
+					
+					handleAddClick: function() {
+						var fontNum = $(".js-fontnumber").text();
+							fontNum = parseInt(fontNum) + 3 ;
+							$(".js-fontnumber").text(fontNum);
+							this.handleFontSize();
+					},
+					
+					handleMinusClick: function() {
+						var fontNum = $(".js-fontnumber").text();
+							fontNum = parseInt(fontNum) - 3 ;
+							if(fontNum <= 10) {
+								fontNum = 10;
+								alert("亲，字太小了哟！");
+							}
+							$(".js-fontnumber").text(fontNum);
+							this.handleFontSize();
+					},
+					
+					handleFontSize: function() {
+						var fontNum = $(".js-fontnumber").text()+"px",
+						    sectionFontSize = $(".js-font");
+						    sectionFontSize.css({"fontSize":fontNum});
+						    this.handelSubmit();
+					},
+					
+					handelSubmit: function() {
+						var msgInfo = {
+							fontSize: $(".js-fontnumber").text()+"px",
+							backgroundColor: $(".js-font").css("background-color")
+						};
+						msgInfo = JSON.stringify(msgInfo);
+						try{
+							
+						if(window.localStorage) {
+							window.localStorage.msgInfo=msgInfo;
+						}
+					}catch(e){}
+					}
+				});
+				
+				var page = new Page();
+				page.init();
+			</script>
+		</div>
+	</body>
+</html>
